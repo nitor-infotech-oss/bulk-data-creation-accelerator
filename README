@@ -1,0 +1,65 @@
+Data Generator Script
+*********************
+
+This is a python script that is written in python version 3.6
+This script generates random data with help of Faker library and generates 3 files \
+that are (excel, csv and json) saved in output folder inside our project folder
+An input data file is provided in input folder as an example of how input file should be formatted
+Logs are maintained in LOGS.log file
+
+
+Prerequisites:
+
+    1. System must have python3.6
+    2. Install all the libraries required using command: pip/pip3 install -r requirements.txt
+    3. *.xlsx input file that consists of 2 columns:
+        i. fieldname : pass what output file's header value should be
+        ii. dataType : pass the data type required to generate output 
+                        (various data types are predefined in datatypes.py file)
+
+
+To run this application:
+    # count is iteration value to generate N number of records
+    # path is file path to determine input file format, this should be excel format
+    # default input file is provided in input folder as data.xlsx
+    # 3 output files will be generated according to following scenarios in output folder
+
+    1. Without parameters: python3 main.py
+        Here count value is set default to 100 and an input data file will be considered from \
+        input folder's data.xlsx file 
+
+    2. With count parameter: python3 main.py count=N
+        Here count value is determined by Nth value e.g count=10 and an input data file \
+        will be considered from input folder's data.xlsx file 
+
+    3. With path parameter: python3 main.py path='file_path'
+        Here count value is set default to 100 and an input data file will be \
+        file_path from path parameter
+    
+    4. With count and path parameter: python3 main.py count=N path='file_path'
+        Here count value is determined by Nth value and an input data file will be \
+        file_path from path parameter
+    
+    5. With field and data type parameters:
+            python3 main.py FirstName first_name LastName last_name Email email
+
+        Here count value is set default to 100 and output data will generate based on \
+        parameter values; here all the parameters are divided into set of 2 parts \ 
+        and each part cosist of 2 values:
+        i. first value will be Header of output file
+        ii. second value will be value generated according to specified data type 
+
+    6. With count, field and data type parameters:
+            python3 main.py count=N FirstName first_name
+
+        Here count value is determined by Nth value and output data will generate based on \
+        parameter values
+
+    7. With count, path, field and data type parameters:
+            python3 main.py count=N path='file_path' FirstName first_name
+
+        Here count value is determined by Nth value and output data will generate based on \
+        input file provided from path parameter and it will append extra field and data type \
+        passed in parameters
+
+
