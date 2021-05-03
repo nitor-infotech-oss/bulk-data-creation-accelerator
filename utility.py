@@ -13,7 +13,7 @@ logging.basicConfig(filename="LOGS.log",
 logger = logging.getLogger()
 
 # to compute execution time
-current_time = time.time()
+current_time = time.time
 
 #to get current date and time
 datetime_now = datetime.now()

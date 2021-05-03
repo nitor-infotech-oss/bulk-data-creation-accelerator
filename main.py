@@ -41,7 +41,7 @@ def parse_inputs(arguments):
 if __name__ == "__main__":
     try:
         # to compute execution time
-        begin_time = current_time
+        begin_time = current_time()
 
         # processing command line argument
         count, path, field_and_data_type_list = parse_inputs(sys.argv)
@@ -81,16 +81,18 @@ if __name__ == "__main__":
 
             for element in field_and_data_type_list:
                 field_data_type_tuple += (element,)
-                if len(field_data_type_tuple) == 2:
+                if str(element).lower() == 'value':
+                    continue
+                if len(field_data_type_tuple) >= 2:
                     processed_data.append(field_data_type_tuple)
                     field_data_type_tuple = ()
 
         if processed_data:
             datagenerator_obj.create_files(processed_data)
 
-            minutes, seconds = divmod(current_time-begin_time, 60)
+            minutes, seconds = divmod(current_time()-begin_time, 60)
 
-            logger.info("Execution of {} records ended in : {:0.0f} minutes {:0.0f} seconds".format(
+            logger.info("Execution of {} records ended in : {:0.0f} minutes {:0.02f} seconds".format(
                 count, minutes, seconds))
 
         logger.info("End of script....")

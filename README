@@ -63,3 +63,11 @@ To run this application:
         passed in parameters
 
 
+Note : if default value is to be used for a specific field having same value for all records:
+        For excel:
+                append the value followed by '=' symbol after data type in excel sheet's \
+                dataType column
+                e.g: first_name=XYZ or name=ABC DEF or age=18
+        For command line argument:
+                append the value followed by 'value=' keyword after data type
+                e.g: Firstname value='XYZ' or Name value='ABC DEF' or Age value=18

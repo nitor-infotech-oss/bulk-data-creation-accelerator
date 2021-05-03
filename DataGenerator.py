@@ -36,20 +36,32 @@ class DataGenerator:
                 for field in processed_data:
                     value_list = []
                     field_name = field[0]
-                    data_type = str(field[1]).lower()
+                    data_type = field[1]
 
-                    if faker_function_dictionary.get(data_type):
-                        # to get value from faker library's dictionary
+                    # if field's value is given in excel then appending provided records
+                    if '=' in data_type:
+                        value_list = [data_type.split('=')[-1] for iteration in range(
+                            self.iteration_count)]
+
+                    # if field's value is given in excel then appending provided records
+                    elif len(field) > 2:
+                        value_list = [field[2] for iteration in range(
+                            self.iteration_count)]
+
+                    # to get value from faker library's dictionary
+                    elif faker_function_dictionary.get(str(data_type).lower()):
                         for iteration in range(self.iteration_count):
                             value_list.append(
                                 faker_function_dictionary[data_type]())
-                    elif random_value_dictionary.get(data_type):
-                        # to get value from random dictionary
+
+                    # to get value from random dictionary
+                    elif random_value_dictionary.get(str(data_type).lower()):
                         for iteration in range(self.iteration_count):
                             value_list.append(random.choice(
-                                random_value_dictionary[data_type]))
+                                random_value_dictionary[str(data_type).lower()]))
+
+                    # if field's data type is invalid then appending empty records
                     else:
-                        # if field's data type is invalid then appending empty records
                         value_list = [None for iteration in range(
                             self.iteration_count)]
 
