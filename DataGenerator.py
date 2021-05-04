@@ -13,6 +13,7 @@ class DataGenerator:
             initialization method to set count and path parameters
         '''
         try:
+            logger.info("Script initiated, starting process....")
             self.iteration_count = iteration_count
             if file_path and os.path.exists(file_path):
                 self.path = file_path
@@ -38,12 +39,12 @@ class DataGenerator:
                     field_name = field[0]
                     data_type = field[1]
 
-                    # if field's value is given in excel then appending provided records
+                    # if field's value is given in excel then appending provided value
                     if '=' in data_type:
                         value_list = [data_type.split('=')[-1] for iteration in range(
                             self.iteration_count)]
 
-                    # if field's value is given in excel then appending provided records
+                    # if field's value is given via argument then appending provided value
                     elif len(field) > 2:
                         value_list = [field[2] for iteration in range(
                             self.iteration_count)]

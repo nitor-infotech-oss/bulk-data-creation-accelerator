@@ -18,7 +18,7 @@ def parse_inputs(arguments):
         path = None
         field_and_data_type_list = []
 
-        # splitting arguments to fetch value of count and path in list
+        # splitting arguments after main.py to fetch value of count and path in list
         for argument in arguments[1:]:
             lists_after_splitting_arguments.append(argument.split("="))
 
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
             for element in field_and_data_type_list:
                 field_data_type_tuple += (element,)
-                if str(element).lower() == 'value':
+                if str(element).lower().strip() == 'value':
                     continue
                 if len(field_data_type_tuple) >= 2:
                     processed_data.append(field_data_type_tuple)
@@ -90,10 +90,10 @@ if __name__ == "__main__":
         if processed_data:
             datagenerator_obj.create_files(processed_data)
 
-            minutes, seconds = divmod(current_time()-begin_time, 60)
+            minute, second = divmod(current_time()-begin_time, 60)
 
-            logger.info("Execution of {} records ended in : {:0.0f} minutes {:0.02f} seconds".format(
-                count, minutes, seconds))
+            logger.info("Execution of {} records ended in : {:0.0f} minute {:0.02f} second".format(
+                count, minute, second))
 
         logger.info("End of script....")
 
