@@ -65,9 +65,8 @@ To run this application:
 
 Note : if default value is to be used for a specific field having same value for all records:
         For excel:
-                append the value followed by 'value=' keyword after data type in excel sheet's \
-                dataType column
+                append the value followed by 'value=' keyword in excel sheet's dataType column
                 e.g: value=XYZ or value=ABC DEF or value=18
         For command line argument:
-                append the value followed by 'value=' keyword after data type
+                append the value followed by 'value=' keyword after specifying field name
                 e.g: Firstname value='XYZ' or Name value='ABC DEF' or Age value=18

@@ -4,7 +4,7 @@ import random
 from alive_progress import alive_bar
 from mapping import faker_function_dictionary, random_value_dictionary
 from utility import logger, datetime_now, data_frame
-
+from threading import Thread
 
 class DataGenerator:
 
@@ -22,6 +22,36 @@ class DataGenerator:
         except Exception as e:
             logger.error(e)
 
+    def generate_value_list(self, field, value_list,):
+        '''
+            this function is created to generate value list and execute process parallely
+        '''
+
+        data_type = str(field[1])
+
+        # if field's value is given in excel then appending provided value
+        if '=' in data_type:
+            return value_list.append(data_type.split('=')[-1])
+
+        # if field's value is given via argument then appending provided value
+        elif len(field) > 2:
+            return value_list.append(field[2])
+
+        data_type = data_type.lower()
+
+        # to get value from faker library's dictionary
+        elif faker_function_dictionary.get(data_type):
+            return value_list.append(faker_function_dictionary[data_type]())
+
+        # to get value from random dictionary
+        elif random_value_dictionary.get(data_type):
+            return value_list.append(random.choice(random_value_dictionary[data_type]))
+
+        # if field's data type is invalid then appending empty records
+        else:
+            return value_list.append(None)
+
+
     def generate_data(self, processed_data):
         '''
             in this method we are normalizing data and creating an Ordered Dictionary of generated data
@@ -36,35 +66,16 @@ class DataGenerator:
             with alive_bar(len(processed_data)) as bar:
                 for field in processed_data:
                     value_list = []
-                    field_name = field[0]
-                    data_type = field[1]
+                    field_name = str(field[0])
+                    data_type = str(field[1])
 
-                    # if field's value is given in excel then appending provided value
-                    if '=' in data_type:
-                        value_list = [data_type.split('=')[-1] for iteration in range(
-                            self.iteration_count)]
+                    threads = [Thread(target=self.generate_value_list, args=(field, 
+                                value_list,)) for i in range(self.iteration_count)]
+                    # start all the threads
+                    [t.start() for t in threads] 
 
-                    # if field's value is given via argument then appending provided value
-                    elif len(field) > 2:
-                        value_list = [field[2] for iteration in range(
-                            self.iteration_count)]
-
-                    # to get value from faker library's dictionary
-                    elif faker_function_dictionary.get(str(data_type).lower()):
-                        for iteration in range(self.iteration_count):
-                            value_list.append(
-                                faker_function_dictionary[data_type]())
-
-                    # to get value from random dictionary
-                    elif random_value_dictionary.get(str(data_type).lower()):
-                        for iteration in range(self.iteration_count):
-                            value_list.append(random.choice(
-                                random_value_dictionary[str(data_type).lower()]))
-
-                    # if field's data type is invalid then appending empty records
-                    else:
-                        value_list = [None for iteration in range(
-                            self.iteration_count)]
+                    # wait for threads to finish
+                    [t.join() for t in threads]
 
                     data_frame.update({field_name: value_list})
 
